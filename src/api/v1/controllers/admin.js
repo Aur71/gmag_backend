@@ -5,7 +5,7 @@ const addProduct = async (req, res) => {
     const product = await Product.create(req.body);
     res.status(201).send(product);
   } catch (error) {
-    res.status(500).send(error);
+    res.status(500).send(error['message']);
   }
 };
 
