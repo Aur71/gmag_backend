@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const ImageSchema = require('./schemas/Image').schema;
 const ColorSchema = require('./schemas/Color').schema;
+const ReviewSchema = require('./schemas/Review').schema;
 
 const ProductSchema = new mongoose.Schema({
   type: {
@@ -61,7 +62,7 @@ const ProductSchema = new mongoose.Schema({
   },
   description: [],
   specifications: [],
-  reviews: [],
+  reviews: [ReviewSchema],
   questions: [],
   recomandations: [],
 });
