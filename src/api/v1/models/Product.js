@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const ImageSchema = require('./schemas/Image').schema;
+const ColorSchema = require('./schemas/Color').schema;
 
 const ProductSchema = new mongoose.Schema({
   type: {
@@ -50,7 +51,23 @@ const ProductSchema = new mongoose.Schema({
     type: Number,
     default: Date.now,
   },
-  images: [ImageSchema],
+  images: {
+    type: [ImageSchema],
+    validate: [arrayMinLength, 'At least one image is required'],
+  },
+  colors: {
+    type: [ColorSchema],
+    validate: [arrayMinLength, 'At least one color is required'],
+  },
+  description: [],
+  specifications: [],
+  reviews: [],
+  questions: [],
+  recomandations: [],
 });
 
 module.exports = mongoose.model('Product', ProductSchema);
+
+function arrayMinLength(arr) {
+  return arr && arr.length > 0;
+}
