@@ -1,8 +1,9 @@
 const mongoose = require('mongoose');
 const ImageSchema = require('./schemas/Image').schema;
 const ColorSchema = require('./schemas/Color').schema;
-const ReviewSchema = require('./schemas/Review').schema;
-const QuestionSchema = require('./schemas/Question').schema;
+const CategorySchema = require('./schemas/specifications/Category').schema;
+const ReviewSchema = require('./schemas/reviews/Review').schema;
+const QuestionSchema = require('./schemas/questions/Question').schema;
 const RecommendationSchema = require('./schemas/Recommendation').schema;
 
 const ProductSchema = new mongoose.Schema({
@@ -63,7 +64,7 @@ const ProductSchema = new mongoose.Schema({
     validate: [arrayMinLength, 'At least one color is required'],
   },
   description: [],
-  specifications: [],
+  specifications: [CategorySchema],
   reviews: [ReviewSchema],
   questions: [QuestionSchema],
   recommendations: [RecommendationSchema],

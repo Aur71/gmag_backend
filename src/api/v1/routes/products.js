@@ -17,6 +17,7 @@ router.route('/id/:id/recommended').get(getRecommendedProducts);
 router.route('/promotion-slider').get(getPromotionSlider);
 router.route('/hot-deals').get(getHotDeals);
 router.route('/most-popular').get(getMostPopular);
+// ADD ROUTE FOR SEARCH
 
 module.exports = router;
 
