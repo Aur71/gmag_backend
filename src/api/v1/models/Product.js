@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 const ImageSchema = require('./schemas/Image').schema;
 const ColorSchema = require('./schemas/Color').schema;
 const ReviewSchema = require('./schemas/Review').schema;
+const QuestionSchema = require('./schemas/Question').schema;
+const RecommendationSchema = require('./schemas/Recommendation').schema;
 
 const ProductSchema = new mongoose.Schema({
   type: {
@@ -63,8 +65,8 @@ const ProductSchema = new mongoose.Schema({
   description: [],
   specifications: [],
   reviews: [ReviewSchema],
-  questions: [],
-  recomandations: [],
+  questions: [QuestionSchema],
+  recommendations: [RecommendationSchema],
 });
 
 module.exports = mongoose.model('Product', ProductSchema);
