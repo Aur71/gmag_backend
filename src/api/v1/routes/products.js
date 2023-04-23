@@ -4,7 +4,6 @@ const {
   getAllProducts,
   getProductsByType,
   getSingleProduct,
-  getRecommendedProducts,
   getPromotionSlider,
   getHotDeals,
   getMostPopular,
@@ -13,7 +12,6 @@ const {
 router.route('/').get(getAllProducts);
 router.route('/type/:type').get(getProductsByType);
 router.route('/id/:id').get(getSingleProduct);
-router.route('/id/:id/recommended').get(getRecommendedProducts);
 router.route('/promotion-slider').get(getPromotionSlider);
 router.route('/hot-deals').get(getHotDeals);
 router.route('/most-popular').get(getMostPopular);
