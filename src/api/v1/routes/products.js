@@ -12,11 +12,12 @@ const {
   searchProducts,
 } = require('../controllers/products');
 
-router.route('/').get(getAllProducts);
-router.route('/').post(addProduct);
-router.route('/id/:id').get(getSingleProduct);
-router.route('/id/:id').delete(deleteProduct);
-router.route('/id/:id').patch(editProduct);
+router.route('/').get(getAllProducts).post(addProduct);
+router
+  .route('/id/:id')
+  .get(getSingleProduct)
+  .delete(deleteProduct)
+  .put(editProduct);
 router.route('/search').get(searchProducts);
 router.route('/type/:type').get(getProductsByType);
 router.route('/hot-deals').get(getHotDeals);

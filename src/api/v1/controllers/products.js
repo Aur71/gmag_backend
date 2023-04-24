@@ -64,9 +64,32 @@ const getSingleProduct = async (req, res) => {
   }
 };
 
-const deleteProduct = (req, res) => {};
+const deleteProduct = async (req, res) => {
+  try {
+    const deletedProduct = await Product.findByIdAndDelete(req.params.id);
+    if (!deletedProduct) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+    res.send({ message: 'Product deleted successfully' });
+  } catch (error) {
+    res.status(500).send(error['message']);
+  }
+};
 
-const editProduct = (req, res) => {};
+const editProduct = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updatedProduct = await Product.findByIdAndUpdate(id, req.body, {
+      new: true,
+    });
+    if (!updatedProduct) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+    res.send(updatedProduct);
+  } catch (error) {
+    res.status(500).send(error['message']);
+  }
+};
 
 const getProductsByType = async (req, res) => {
   try {
@@ -167,12 +190,12 @@ const searchProducts = async (req, res) => {
 
 module.exports = {
   getAllProducts,
-  getProductsByType,
+  searchProducts,
   getSingleProduct,
-  getHotDeals,
-  getMostPopular,
   addProduct,
   deleteProduct,
   editProduct,
-  searchProducts,
+  getProductsByType,
+  getHotDeals,
+  getMostPopular,
 };
