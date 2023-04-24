@@ -2,20 +2,25 @@ const express = require('express');
 const router = express.Router();
 const {
   getAllProducts,
-  getProductsByType,
+  addProduct,
   getSingleProduct,
-  getPromotionSlider,
+  deleteProduct,
+  editProduct,
+  getProductsByType,
   getHotDeals,
   getMostPopular,
+  searchProducts,
 } = require('../controllers/products');
 
 router.route('/').get(getAllProducts);
-router.route('/type/:type').get(getProductsByType);
+router.route('/').post(addProduct);
 router.route('/id/:id').get(getSingleProduct);
-router.route('/promotion-slider').get(getPromotionSlider);
+router.route('/id/:id').delete(deleteProduct);
+router.route('/id/:id').patch(editProduct);
+router.route('/search').get(searchProducts);
+router.route('/type/:type').get(getProductsByType);
 router.route('/hot-deals').get(getHotDeals);
 router.route('/most-popular').get(getMostPopular);
-// ADD ROUTE FOR SEARCH
 
 module.exports = router;
 

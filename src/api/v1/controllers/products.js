@@ -23,26 +23,10 @@ const getAllProducts = async (req, res) => {
   }
 };
 
-const getProductsByType = async (req, res) => {
+const addProduct = async (req, res) => {
   try {
-    const products = await Product.find({ type: req.params.type }).select([
-      '_id',
-      'type',
-      'name',
-      'thumbnail',
-      'currentPrice',
-      'oldPrice',
-      'discount',
-      'rating',
-      'reviewsCount',
-      'stock',
-      'orders',
-      'date',
-      'specifications',
-    ]);
-
-    const modifiedProducts = formatSpecifications(products);
-    res.status(200).send(modifiedProducts);
+    const product = await Product.create(req.body);
+    res.status(201).send(product);
   } catch (error) {
     res.status(500).send(error['message']);
   }
@@ -80,8 +64,33 @@ const getSingleProduct = async (req, res) => {
   }
 };
 
-const getPromotionSlider = (req, res) => {
-  res.send('promotion slider');
+const deleteProduct = (req, res) => {};
+
+const editProduct = (req, res) => {};
+
+const getProductsByType = async (req, res) => {
+  try {
+    const products = await Product.find({ type: req.params.type }).select([
+      '_id',
+      'type',
+      'name',
+      'thumbnail',
+      'currentPrice',
+      'oldPrice',
+      'discount',
+      'rating',
+      'reviewsCount',
+      'stock',
+      'orders',
+      'date',
+      'specifications',
+    ]);
+
+    const modifiedProducts = formatSpecifications(products);
+    res.status(200).send(modifiedProducts);
+  } catch (error) {
+    res.status(500).send(error['message']);
+  }
 };
 
 const getHotDeals = async (req, res) => {
@@ -124,11 +133,46 @@ const getMostPopular = async (req, res) => {
   }
 };
 
+const searchProducts = async (req, res) => {
+  try {
+    const { query } = req.query;
+    const products = await Product.find({
+      $or: [
+        { name: { $regex: query, $options: 'i' } },
+        { type: { $regex: query, $options: 'i' } },
+      ],
+    }).select([
+      '_id',
+      'type',
+      'name',
+      'thumbnail',
+      'currentPrice',
+      'oldPrice',
+      'discount',
+      'rating',
+      'reviewsCount',
+      'stock',
+      'orders',
+      'date',
+      'specifications',
+    ]);
+
+    const modifiedProducts = formatSpecifications(products);
+    res.json(modifiedProducts);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server Error' });
+  }
+};
+
 module.exports = {
   getAllProducts,
   getProductsByType,
   getSingleProduct,
-  getPromotionSlider,
   getHotDeals,
   getMostPopular,
+  addProduct,
+  deleteProduct,
+  editProduct,
+  searchProducts,
 };

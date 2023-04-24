@@ -1,5 +1,17 @@
-const getCartProducts = (req, res) => {
-  res.send('your cart products');
-};
+const getCartProducts = (req, res) => {};
 
-module.exports = { getCartProducts };
+const addCartProduct = (req, res) => {};
+
+const removeCartProduct = (req, res) => {};
+
+const increaseProductCount = (req, res) => {};
+
+const decreaseProductCount = (req, res) => {};
+
+module.exports = {
+  getCartProducts,
+  addCartProduct,
+  removeCartProduct,
+  increaseProductCount,
+  decreaseProductCount,
+};

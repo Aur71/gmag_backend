@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const promotionSlider = require('./api/v1/routes/promotionSlider');
 const products = require('./api/v1/routes/products');
 const cart = require('./api/v1/routes/cart');
 const admin = require('./api/v1/routes/admin');
@@ -13,6 +14,7 @@ app.use(express.json());
 app.use('/api/v1/products', products);
 app.use('/api/v1/cart', cart);
 app.use('/api/v1/admin', admin);
+app.use('./api/v1/promotion-slider', promotionSlider);
 
 const port = 3000;
 const start = async () => {
