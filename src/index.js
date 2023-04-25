@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const auth = require('./api/v1/routes/auth');
 const promotionSlider = require('./api/v1/routes/promotionSlider');
 const products = require('./api/v1/routes/products');
 const cart = require('./api/v1/routes/cart');
@@ -11,6 +12,7 @@ require('dotenv').config();
 app.use(express.json());
 
 // routes
+app.use('/api/v1/auth', auth);
 app.use('/api/v1/products', products);
 app.use('/api/v1/cart', cart);
 app.use('/api/v1/admin', admin);
