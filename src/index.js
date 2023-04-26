@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const cors = require('cors');
 const auth = require('./api/v1/routes/auth');
 const promotionSlider = require('./api/v1/routes/promotionSlider');
 const products = require('./api/v1/routes/products');
@@ -10,6 +11,11 @@ require('dotenv').config();
 
 // middleware
 app.use(express.json());
+app.use(
+  cors({
+    origin: 'http://localhost:3001',
+  })
+);
 
 // routes
 app.use('/api/v1/auth', auth);
