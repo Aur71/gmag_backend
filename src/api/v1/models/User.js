@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const validator = require('validator');
+const List = require('./schemas/user/List');
 
 const userSchema = new mongoose.Schema(
   {
@@ -10,6 +11,10 @@ const userSchema = new mongoose.Schema(
         return this.email.replace(/@gmail.com$/, '');
       },
     },
+    mainList: {
+      type: String,
+      default: 'Favorites',
+    },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     profileImage: {
@@ -17,10 +22,16 @@ const userSchema = new mongoose.Schema(
       default:
         'https://firebasestorage.googleapis.com/v0/b/gmag-b6a34.appspot.com/o/users%2Fuser.png?alt=media&token=701f682d-d622-412a-8788-1cd46d5c86d7',
     },
+    favorites: {
+      type: [List],
+      default: [{ name: 'Favorites' }],
+    },
+    cart: [],
   },
   { timestamps: true }
 );
 
+// static functions
 userSchema.statics.signup = async function (email, password) {
   if (!email || !password) throw Error('All fields must be filled');
   if (!validator.isEmail(email)) throw Error('Email is not valid');

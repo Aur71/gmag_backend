@@ -7,6 +7,9 @@ const {
   increaseProductCount,
   decreaseProductCount,
 } = require('../controllers/cart');
+const requireAuth = require('../middleware/auth');
+
+router.use(requireAuth);
 
 router.route('/').get(getCartProducts);
 router.route('/add/:id').post(addCartProduct);
