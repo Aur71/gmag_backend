@@ -49,8 +49,14 @@ const ProductSchema = new mongoose.Schema(
       default: 0,
     },
     orders: {
-      type: Number,
-      default: 0,
+      sold: {
+        type: Number,
+        default: 0,
+      },
+      returned: {
+        type: Number,
+        default: 0,
+      },
     },
     images: {
       type: [ImageSchema],
