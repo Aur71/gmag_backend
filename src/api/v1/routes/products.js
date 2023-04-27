@@ -24,7 +24,3 @@ router.route('/hot-deals').get(getHotDeals);
 router.route('/most-popular').get(getMostPopular);
 
 module.exports = router;
-
-// need to add routes for adding products to favorite
-// need to add routes for creating, deleting and updating lists.
-// need to add routes for getting a user reviews info and getting all the info if the user is logged in

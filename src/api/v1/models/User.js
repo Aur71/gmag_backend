@@ -11,10 +11,6 @@ const userSchema = new mongoose.Schema(
         return this.email.replace(/@gmail.com$/, '');
       },
     },
-    mainList: {
-      type: String,
-      default: 'Favorites',
-    },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     profileImage: {
@@ -23,8 +19,14 @@ const userSchema = new mongoose.Schema(
         'https://firebasestorage.googleapis.com/v0/b/gmag-b6a34.appspot.com/o/users%2Fuser.png?alt=media&token=701f682d-d622-412a-8788-1cd46d5c86d7',
     },
     favorites: {
-      type: [List],
-      default: [{ name: 'Favorites' }],
+      mainList: {
+        type: String,
+        default: 'Favorites',
+      },
+      lists: {
+        type: [List],
+        default: [{ name: 'Favorites', products: [] }],
+      },
     },
     cart: [],
   },
