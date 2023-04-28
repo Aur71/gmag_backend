@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const ImageSchema = require('./schemas/Image').schema;
 const ColorSchema = require('./schemas/Color').schema;
 const CategorySchema = require('./schemas/specifications/Category').schema;
-const SmallElementSchema = require('./schemas/description/SmallElement');
 const ReviewSchema = require('./schemas/reviews/Review').schema;
 const QuestionSchema = require('./schemas/questions/Question').schema;
 const RecommendationSchema = require('./schemas/Recommendation').schema;
@@ -67,7 +66,7 @@ const ProductSchema = new mongoose.Schema(
       type: [ColorSchema],
       validate: [arrayMinLength, 'At least one color is required'],
     },
-    description: [SmallElementSchema],
+    description: [],
     specifications: [CategorySchema],
     reviews: [ReviewSchema],
     questions: [QuestionSchema],
