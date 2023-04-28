@@ -4,11 +4,11 @@ const cors = require('cors');
 require('dotenv').config();
 
 // routes
+const promotionSlidesRoutes = require('./api/v1/routes/promotionSlides');
 const authRoutes = require('./api/v1/routes/auth');
 const productsRoutes = require('./api/v1/routes/products');
 const favoritesRoutes = require('./api/v1/routes/favorites');
 const cartRoutes = require('./api/v1/routes/cart');
-const promotionSliderRoutes = require('./api/v1/routes/promotionSlider');
 const adminRoutes = require('./api/v1/routes/admin');
 
 // db
@@ -23,7 +23,7 @@ app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/products', productsRoutes);
 app.use('/api/v1/favorites', favoritesRoutes);
 app.use('/api/v1/cart', cartRoutes);
-app.use('/api/v1/promotion-slider', promotionSliderRoutes);
+app.use('/api/v1/promotion-slides', promotionSlidesRoutes);
 app.use('/api/v1/admin', adminRoutes);
 
 // database connection
