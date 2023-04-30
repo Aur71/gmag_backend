@@ -36,21 +36,20 @@ const getSingleProduct = async (req, res) => {
   try {
     const product = await Product.findById(req.params.id)
       .populate({
-        path: 'recommendations.productID',
-        select: [
-          '_id',
-          'type',
-          'name',
-          'thumbnail',
-          'currentPrice',
-          'oldPrice',
-          'discount',
-          'rating',
-          'reviewsCount',
-          'stock',
-          'orders',
-          'date',
-        ],
+        path: 'reviews.postedBy',
+        select: 'profileImage name',
+      })
+      .populate({
+        path: 'reviews.comments.postedBy',
+        select: 'profileImage name',
+      })
+      .populate({
+        path: 'questions.postedBy',
+        select: 'profileImage name',
+      })
+      .populate({
+        path: 'questions.answers.postedBy',
+        select: 'profileImage name',
       })
       .exec();
     if (!product)
