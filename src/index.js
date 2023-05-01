@@ -7,6 +7,7 @@ require('dotenv').config();
 const promotionSlidesRoutes = require('./api/v1/routes/promotionSlides');
 const authRoutes = require('./api/v1/routes/auth');
 const productsRoutes = require('./api/v1/routes/products');
+const reviewsRoutes = require('./api/v1/routes/reviews');
 const favoritesRoutes = require('./api/v1/routes/favorites');
 const cartRoutes = require('./api/v1/routes/cart');
 const adminRoutes = require('./api/v1/routes/admin');
@@ -21,6 +22,7 @@ app.use(cors({ origin: 'http://localhost:3001' }));
 // routes
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/products', productsRoutes);
+app.use('/api/v1/reviews', reviewsRoutes);
 app.use('/api/v1/favorites', favoritesRoutes);
 app.use('/api/v1/cart', cartRoutes);
 app.use('/api/v1/promotion-slides', promotionSlidesRoutes);
