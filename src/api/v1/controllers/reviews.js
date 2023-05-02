@@ -1,33 +1,27 @@
 const Product = require('../models/Product');
 
 const addReview = async (req, res) => {
-  res.send('add reviewww');
-  //   const { stars, title, content } = req.body;
-  //   const { productId } = req.params;
-  //   const userId = req.user._id; // assuming you have middleware to verify user authentication
+  const { stars, title, content } = req.body;
+  const { productId } = req.params;
+  const userId = req.user._id;
 
-  //   try {
-  //     const product = await Product.findById(productId);
-
-  //     if (!product) {
-  //       return res.status(404).json({ error: 'Product not found' });
-  //     }
-
-  //     const newReview = {
-  //       stars,
-  //       title,
-  //       content,
-  //       postedBy: userId,
-  //     };
-
-  //     product.reviews.push(newReview);
-  //     await product.save();
-
-  //     res.status(201).json(newReview);
-  //   } catch (err) {
-  //     console.error(err);
-  //     res.status(500).json({ error: 'Server error' });
-  //   }
+  try {
+    const product = await Product.findById(productId);
+    if (!product) {
+      return res.status(404).json({ error: 'Product not found' });
+    }
+    const newReview = {
+      stars,
+      title,
+      content,
+      postedBy: userId,
+    };
+    product.reviews.push(newReview);
+    await product.save();
+    res.status(201).json('Review added');
+  } catch (err) {
+    res.status(500).json({ error: 'Server error' });
+  }
 };
 
 const updateReview = (req, res) => {
