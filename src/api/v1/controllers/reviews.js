@@ -51,8 +51,28 @@ const updateReview = async (req, res) => {
   }
 };
 
-const deleteReview = (req, res) => {
-  res.send('delete review');
+const deleteReview = async (req, res) => {
+  const { productId, reviewId } = req.params;
+  const userId = req.user._id;
+
+  try {
+    const product = await Product.findById(productId);
+    const review = product.reviews.id(reviewId);
+    if (!product) {
+      return res.status(404).json({ error: 'Product not found' });
+    }
+    if (!review) {
+      return res.status(404).json({ error: 'Review not found' });
+    }
+    if (review.postedBy.toString() !== userId.toString()) {
+      return res.status(401).json({ error: 'You are not authorized' });
+    }
+    product.reviews.pull({ _id: reviewId });
+    await product.save();
+    res.status(200).json('Review deleted');
+  } catch (err) {
+    res.status(500).json({ error: 'Server error' });
+  }
 };
 
 const addComment = (req, res) => {
