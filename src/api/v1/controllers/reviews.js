@@ -133,8 +133,33 @@ const updateComment = async (req, res) => {
   }
 };
 
-const deleteComment = (req, res) => {
-  res.send('delete comment to a review');
+const deleteComment = async (req, res) => {
+  const { productId, reviewId, commentId } = req.params;
+  const userId = req.user._id;
+
+  try {
+    const product = await Product.findById(productId);
+    const review = product.reviews.id(reviewId);
+    const comment = review.comments.id(commentId);
+    if (!product) {
+      return res.status(404).json({ error: 'Product not found' });
+    }
+    if (!review) {
+      return res.status(404).json({ error: 'Review not found' });
+    }
+    if (!comment) {
+      return res.status(404).json({ error: 'Comment not found' });
+    }
+    if (userId.toString() !== comment.postedBy.toString()) {
+      return res.status(404).json({ error: 'Not authorized' });
+    }
+
+    review.comments.pull({ _id: commentId });
+    await product.save();
+    res.status(200).send('Comment deleted');
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
 };
 
 const addLike = (req, res) => {
