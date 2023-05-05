@@ -75,8 +75,32 @@ const deleteReview = async (req, res) => {
   }
 };
 
-const addComment = (req, res) => {
-  res.send('add comment to a review');
+const addComment = async (req, res) => {
+  const { content } = req.body;
+  const { productId, reviewId } = req.params;
+  const userId = req.user._id;
+
+  try {
+    const product = await Product.findById(productId);
+    const review = product.reviews.id(reviewId);
+    if (!product) {
+      return res.status(404).json({ error: 'Product not found' });
+    }
+    if (!review) {
+      return res.status(404).json({ error: 'Review not found' });
+    }
+
+    const newComment = {
+      content,
+      postedBy: userId,
+    };
+
+    review.comments.push(newComment);
+    await product.save();
+    res.status(201).json('Comment added');
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
 };
 
 const updateComment = (req, res) => {
