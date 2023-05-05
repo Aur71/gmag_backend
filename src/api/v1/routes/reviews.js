@@ -21,9 +21,6 @@ router
   .route('/:productId/:reviewId/comments/:commentId')
   .put(updateComment)
   .delete(deleteComment);
-router
-  .route('/:productId/:reviewId/likes/:userId')
-  .post(addLike)
-  .delete(removeLike);
+router.route('/:productId/:reviewId/likes').post(addLike).delete(removeLike);
 
 module.exports = router;

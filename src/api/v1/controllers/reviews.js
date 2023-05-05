@@ -162,12 +162,60 @@ const deleteComment = async (req, res) => {
   }
 };
 
-const addLike = (req, res) => {
-  res.send('add like');
+const addLike = async (req, res) => {
+  const { productId, reviewId } = req.params;
+  const userId = req.user._id;
+
+  try {
+    const product = await Product.findById(productId);
+    const review = product.reviews.id(reviewId);
+    const hasId = review.likes.includes(userId);
+
+    if (!product) {
+      return res.status(404).json({ error: 'Product not found' });
+    }
+    if (!review) {
+      return res.status(404).json({ error: 'Review not found' });
+    }
+    if (hasId) {
+      return res
+        .status(400)
+        .json({ error: 'You have already liked this review' });
+    }
+
+    review.likes.push(userId);
+    await product.save();
+    res.status(200).send('Like added');
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
 };
 
-const removeLike = (req, res) => {
-  res.send('remove like');
+const removeLike = async (req, res) => {
+  const { productId, reviewId } = req.params;
+  const userId = req.user._id;
+
+  try {
+    const product = await Product.findById(productId);
+    const review = product.reviews.id(reviewId);
+    const hasId = review.likes.includes(userId);
+
+    if (!product) {
+      return res.status(404).json({ error: 'Product not found' });
+    }
+    if (!review) {
+      return res.status(404).json({ error: 'Review not found' });
+    }
+    if (!hasId) {
+      return res.status(400).json({ error: 'Like is already removed' });
+    }
+
+    review.likes.pull(userId);
+    await product.save();
+    res.status(200).send('Like removed');
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
 };
 
 module.exports = {
