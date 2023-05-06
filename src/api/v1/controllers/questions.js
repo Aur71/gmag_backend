@@ -99,12 +99,61 @@ const addAnswer = async (req, res) => {
   }
 };
 
-const updateAnswer = (req, res) => {
-  res.send('Update answer');
+const updateAnswer = async (req, res) => {
+  const { newAnswer } = req.body;
+  const { productId, questionId, answerId } = req.params;
+  const userId = req.user._id;
+
+  try {
+    const product = await Product.findById(productId);
+    const question = product.questions.id(questionId);
+    const answer = question.answers.id(answerId);
+    if (!product) {
+      return res.status(404).json({ error: 'Product not found' });
+    }
+    if (!question) {
+      return res.status(404).json({ error: 'Question not found' });
+    }
+    if (!answer) {
+      return res.status(404).json({ error: 'Answer not found' });
+    }
+    if (answer.postedBy.toString() !== userId.toString()) {
+      return res.status(401).json({ error: 'You are not authorized' });
+    }
+    answer.answer = newAnswer;
+    await product.save();
+    res.status(201).json('Answer updated');
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
 };
 
-const deleteAnswer = (req, res) => {
-  res.send('Delete answer');
+const deleteAnswer = async (req, res) => {
+  const { productId, questionId, answerId } = req.params;
+  const userId = req.user._id;
+
+  try {
+    const product = await Product.findById(productId);
+    const question = product.questions.id(questionId);
+    const answer = question.answers.id(answerId);
+    if (!product) {
+      return res.status(404).json({ error: 'Product not found' });
+    }
+    if (!question) {
+      return res.status(404).json({ error: 'Question not found' });
+    }
+    if (!answer) {
+      return res.status(404).json({ error: 'Answer not found' });
+    }
+    if (answer.postedBy.toString() !== userId.toString()) {
+      return res.status(401).json({ error: 'You are not authorized' });
+    }
+    question.answers.pull({ _id: answerId });
+    await product.save();
+    res.status(201).json('Answer deleted');
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
 };
 
 module.exports = {
