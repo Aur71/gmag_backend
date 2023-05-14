@@ -21,6 +21,9 @@ app.use(express.json());
 app.use(cors({ origin: 'http://localhost:3001' }));
 
 // routes
+app.get('/', (req, res) => {
+  res.send('gmag api');
+});
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/products', productsRoutes);
 app.use('/api/v1/reviews', reviewsRoutes);
@@ -31,14 +34,11 @@ app.use('/api/v1/promotion-slides', promotionSlidesRoutes);
 app.use('/api/v1/admin', adminRoutes);
 
 // database connection
-const port = 3000;
+const port = process.env.PORT || 3000;
 const start = async () => {
   try {
     await connectDB(process.env.MONGODB_URI);
-    app.listen(
-      process.env.PORT || port,
-      console.log(`Server is listening on port: ${port}`)
-    );
+    app.listen(port, console.log(`Server is listening on port: ${port}`));
   } catch (error) {
     console.log(error);
   }
