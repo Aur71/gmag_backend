@@ -18,7 +18,12 @@ const connectDB = require('./src/api/v1/db/connect');
 
 // middleware
 app.use(express.json());
-app.use(cors({ origin: 'http://localhost:3001' }));
+
+app.use(
+  cors({
+    origin: ['http://localhost:3001', 'https://gmag.vercel.app/'],
+  })
+);
 
 // routes
 app.get('/', (req, res) => {
