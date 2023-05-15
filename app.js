@@ -4,17 +4,17 @@ const cors = require('cors');
 require('dotenv').config();
 
 // routes
-const promotionSlidesRoutes = require('./api/v1/routes/promotionSlides');
-const authRoutes = require('./api/v1/routes/auth');
-const productsRoutes = require('./api/v1/routes/products');
-const reviewsRoutes = require('./api/v1/routes/reviews');
-const questionsRoutes = require('./api/v1/routes/questions');
-const favoritesRoutes = require('./api/v1/routes/favorites');
-const cartRoutes = require('./api/v1/routes/cart');
-const adminRoutes = require('./api/v1/routes/admin');
+const promotionSlidesRoutes = require('./src/api/v1/routes/promotionSlides');
+const authRoutes = require('./src/api/v1/routes/auth');
+const productsRoutes = require('./src/api/v1/routes/products');
+const reviewsRoutes = require('./src/api/v1/routes/reviews');
+const questionsRoutes = require('./src/api/v1/routes/questions');
+const favoritesRoutes = require('./src/api/v1/routes/favorites');
+const cartRoutes = require('./src/api/v1/routes/cart');
+const adminRoutes = require('./src/api/v1/routes/admin');
 
 // db
-const connectDB = require('./api/v1/db/connect');
+const connectDB = require('./src/api/v1/db/connect');
 
 // middleware
 app.use(express.json());
