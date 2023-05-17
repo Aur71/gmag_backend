@@ -12,6 +12,7 @@ const questionsRoutes = require('./src/api/v1/routes/questions');
 const favoritesRoutes = require('./src/api/v1/routes/favorites');
 const cartRoutes = require('./src/api/v1/routes/cart');
 const adminRoutes = require('./src/api/v1/routes/admin');
+const newsLetterRoutes = require('./src/api/v1/routes/newsLetter');
 
 // db
 const connectDB = require('./src/api/v1/db/connect');
@@ -37,6 +38,7 @@ app.use('/api/v1/favorites', favoritesRoutes);
 app.use('/api/v1/cart', cartRoutes);
 app.use('/api/v1/promotion-slides', promotionSlidesRoutes);
 app.use('/api/v1/admin', adminRoutes);
+app.use('/api/v1/news-letter', newsLetterRoutes);
 
 // database connection
 const port = process.env.PORT || 3000;
