@@ -13,17 +13,11 @@ const subscribeUser = async (req, res) => {
   const { name, email } = req.body;
 
   try {
-    if (!name || !email)
-      return res.status(400).json({ error: "Name and email can't be empty" });
-
-    const isUserSubscribed = await subscribedUser.findOne({ email }).exec();
-    if (isUserSubscribed)
-      return res.status(400).json({ error: 'User already subscribed' });
-
+    await subscribedUser.subscribe(name, email);
     await subscribedUser.create(req.body);
     res.status(201).send({ success: 'User subscribed' });
   } catch (error) {
-    res.status(500).send({ error: error['message'] });
+    res.status(error.code).send({ error: error['message'] });
   }
 };
 
@@ -38,7 +32,7 @@ const unsubscribeUser = async (req, res) => {
     await subscribedUser.deleteOne({ email });
     res.send('User unsubscribed');
   } catch (error) {
-    res.status(500).send({ error: error['message'] });
+    res.status(500).send({ error });
   }
 };
 
