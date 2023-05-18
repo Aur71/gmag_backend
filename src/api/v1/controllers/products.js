@@ -187,6 +187,16 @@ const searchProducts = async (req, res) => {
   }
 };
 
+const getProductTypes = async (req, res) => {
+  try {
+    const products = await Product.find({}).select('type');
+    const types = [...new Set(products.map((product) => product.type))];
+    res.status(200).send(types);
+  } catch (error) {
+    res.status(500).json({ message: 'Server Error' });
+  }
+};
+
 module.exports = {
   getAllProducts,
   searchProducts,
@@ -197,4 +207,5 @@ module.exports = {
   getProductsByType,
   getHotDeals,
   getMostPopular,
+  getProductTypes,
 };
