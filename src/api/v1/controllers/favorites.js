@@ -1,5 +1,15 @@
-const getLists = (req, res) => {
-  res.send('get lists for the current user');
+const User = require('../models/User');
+
+const getFavorites = async (req, res) => {
+  const userId = req.user._id;
+  if (!userId) res.status(404).json({ error: 'User not found' });
+  try {
+    const user = await User.findById(userId).select('favorites');
+    if (!user) return res.status(404).json({ error: 'User not found' });
+    res.status(201).send(user);
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
 };
 
 const addList = (req, res) => {
@@ -14,11 +24,11 @@ const editList = (req, res) => {
   res.send('edit list');
 };
 
-const addProduct = (req, res) => {
+const addProductToFavorites = (req, res) => {
   res.send('add product to list');
 };
 
-const removeProduct = (req, res) => {
+const removeProductFromFavorites = (req, res) => {
   res.send('remove product from list');
 };
 
@@ -27,11 +37,11 @@ const moveProduct = (req, res) => {
 };
 
 module.exports = {
-  getLists,
+  getFavorites,
   addList,
   deleteList,
   editList,
-  addProduct,
-  removeProduct,
+  addProductToFavorites,
+  removeProductFromFavorites,
   moveProduct,
 };

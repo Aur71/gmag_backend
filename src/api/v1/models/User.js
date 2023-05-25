@@ -25,7 +25,10 @@ const userSchema = new mongoose.Schema(
       },
       lists: {
         type: [List],
-        default: [{ name: 'Favorites', products: [] }],
+        default: [
+          { name: 'All products', products: [] },
+          { name: 'Favorites', products: [] },
+        ],
       },
     },
     cart: [],
