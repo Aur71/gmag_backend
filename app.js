@@ -37,8 +37,8 @@ app.use('/api/v1/questions', questionsRoutes);
 app.use('/api/v1/favorites', favoritesRoutes);
 app.use('/api/v1/cart', cartRoutes);
 app.use('/api/v1/promotion-slides', promotionSlidesRoutes);
-app.use('/api/v1/admin', adminRoutes);
 app.use('/api/v1/news-letter', newsLetterRoutes);
+app.use('/api/v1/admin', adminRoutes);
 
 // database connection
 const port = process.env.PORT || 3000;
