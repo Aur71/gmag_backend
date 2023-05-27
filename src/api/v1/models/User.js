@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const validator = require('validator');
-const List = require('./schemas/user/List');
+const ListSchema = require('./schemas/user/List').schema;
 
 const userSchema = new mongoose.Schema(
   {
@@ -24,11 +24,8 @@ const userSchema = new mongoose.Schema(
         default: 'Favorites',
       },
       lists: {
-        type: [List],
-        default: [
-          { name: 'All products', products: [] },
-          { name: 'Favorites', products: [] },
-        ],
+        type: [ListSchema],
+        default: [{ name: 'All products' }, { name: 'Favorites' }],
       },
     },
     cart: [],

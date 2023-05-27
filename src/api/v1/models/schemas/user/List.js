@@ -2,15 +2,15 @@ const mongoose = require('mongoose');
 
 const ListSchema = new mongoose.Schema(
   {
-    listName: {
+    name: {
       type: String,
       required: true,
-      default: 'Favorites',
     },
     products: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Product',
+        default: [],
       },
     ],
   },

@@ -2,7 +2,7 @@ const User = require('../models/User');
 
 const getFavorites = async (req, res) => {
   const userId = req.user._id;
-  if (!userId) res.status(404).json({ error: 'User not found' });
+  if (!userId) return res.status(404).json({ error: 'User not found' });
   try {
     const user = await User.findById(userId).select('favorites');
     if (!user) return res.status(404).json({ error: 'User not found' });
@@ -12,8 +12,22 @@ const getFavorites = async (req, res) => {
   }
 };
 
-const addList = (req, res) => {
-  res.send('add list');
+const addList = async (req, res) => {
+  const userId = req.user._id;
+  const { name, useAsMainList } = req.body;
+  if (!userId) res.status(404).json({ error: 'User not found' });
+
+  try {
+    const user = await User.findById(userId).select('favorites');
+    if (!user) return res.status(404).json({ error: 'User not found' });
+    const newList = { name, products: [] };
+    user.favorites.lists.push(newList);
+    if (useAsMainList) user.favorites.mainList = name;
+    await user.save();
+    return res.send(user.favorites);
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
 };
 
 const deleteList = (req, res) => {
