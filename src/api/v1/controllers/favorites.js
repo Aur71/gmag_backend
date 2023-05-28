@@ -55,7 +55,25 @@ const editList = async (req, res) => {
 };
 
 const deleteList = async (req, res) => {
-  res.send('delete list');
+  const userId = req.user._id;
+  const { listId } = req.params;
+  if (!userId) res.status(404).json({ error: 'User not found' });
+
+  try {
+    const user = await User.findById(userId).select('favorites');
+    if (!user) return res.status(404).json({ error: 'User not found' });
+    const list = user.favorites.lists.find(
+      (list) => list._id.toString() === listId.toString()
+    );
+    if (!list) return res.status(404).json({ error: 'List not found' });
+    if (user.favorites.mainList === list.name)
+      user.favorites.mainList = user.favorites.lists[1].name;
+    user.favorites.lists.pull({ _id: listId });
+    await user.save();
+    res.status(201).send(user.favorites);
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
 };
 
 const addProductToFavorites = (req, res) => {
