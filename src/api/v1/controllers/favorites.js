@@ -154,8 +154,34 @@ const removeProductFromFavorites = async (req, res) => {
   }
 };
 
-const moveProduct = (req, res) => {
-  res.send('move product to a different list');
+const moveProduct = async (req, res) => {
+  const userId = req.user._id;
+  const { productId, listId, newListId } = req.params;
+
+  try {
+    const user = await User.findById(userId).select('favorites');
+    if (!user) return res.status(404).json({ error: 'User not found' });
+    user.favorites.lists.forEach((list, index) => {
+      if (!index) return;
+      if (list._id.toString() === listId.toString()) {
+        list.products.pull(productId);
+        return;
+      }
+      if (list._id.toString() === newListId.toString()) {
+        list.products.push(productId);
+        return;
+      }
+    });
+    await user.save();
+    await user.populate({
+      path: 'favorites.lists.products',
+      select:
+        '_id type name thumbnail currentPrice oldPrice rating reviewsCount stock',
+    });
+    res.status(201).send(user.favorites);
+  } catch (error) {
+    res.status(500).send({ error: 'Server error' });
+  }
 };
 
 module.exports = {
