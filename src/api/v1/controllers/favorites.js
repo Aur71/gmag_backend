@@ -7,7 +7,7 @@ const getFavorites = async (req, res) => {
     const user = await User.findById(userId).populate({
       path: 'favorites.lists.products',
       select:
-        '_id type name thumbnail currentPrice oldPrice rating reviewsCount',
+        '_id type name thumbnail currentPrice oldPrice rating reviewsCount stock',
     });
     if (!user) return res.status(404).json({ error: 'User not found' });
     res.status(201).send(user.favorites);
@@ -24,7 +24,7 @@ const addList = async (req, res) => {
     const user = await User.findById(userId).populate({
       path: 'favorites.lists.products',
       select:
-        '_id type name thumbnail currentPrice oldPrice rating reviewsCount',
+        '_id type name thumbnail currentPrice oldPrice rating reviewsCount stock',
     });
     if (!user) return res.status(404).json({ error: 'User not found' });
     const newList = { name, products: [] };
@@ -46,7 +46,7 @@ const editList = async (req, res) => {
     const user = await User.findById(userId).populate({
       path: 'favorites.lists.products',
       select:
-        '_id type name thumbnail currentPrice oldPrice rating reviewsCount',
+        '_id type name thumbnail currentPrice oldPrice rating reviewsCount stock',
     });
     if (!user) return res.status(404).json({ error: 'User not found' });
     const list = user.favorites.lists.find(
@@ -72,7 +72,7 @@ const deleteList = async (req, res) => {
     const user = await User.findById(userId).populate({
       path: 'favorites.lists.products',
       select:
-        '_id type name thumbnail currentPrice oldPrice rating reviewsCount',
+        '_id type name thumbnail currentPrice oldPrice rating reviewsCount stock',
     });
     if (!user) return res.status(404).json({ error: 'User not found' });
     const list = user.favorites.lists.find(
@@ -81,6 +81,11 @@ const deleteList = async (req, res) => {
     if (!list) return res.status(404).json({ error: 'List not found' });
     if (user.favorites.mainList === list.name)
       user.favorites.mainList = user.favorites.lists[1].name;
+    // removeing the products from this list in All Products List
+    list.products.forEach((productId) => {
+      user.favorites.lists[0].products =
+        user.favorites.lists[0].products.filter((id) => productId !== id);
+    });
     user.favorites.lists.pull({ _id: listId });
     await user.save();
     res.status(201).send(user.favorites);
