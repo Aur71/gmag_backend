@@ -100,10 +100,15 @@ const addProductToFavorites = async (req, res) => {
     );
     if (!mainList) return res.status(404).json({ error: 'List not found' });
     if (!_id) return res.status(404).json({ error: 'Product not found' });
-    const isProductAlreadyInMainList = mainList.products.some(
-      (id) => id.toString() === _id.toString()
-    );
-    if (isProductAlreadyInMainList)
+
+    const isProductInAnyList = user.favorites.lists.some((list) => {
+      const { products } = list;
+      if (list.name === user.favorites.lists[0].name) return;
+      return products.some(
+        (productId) => productId.toString() === _id.toString()
+      );
+    });
+    if (isProductInAnyList)
       return res.status(409).json({ error: 'Product already in favorites' });
     mainList.products.push(_id);
     const allProducts = user.favorites.lists[0];
