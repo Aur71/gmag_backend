@@ -10,7 +10,6 @@ const getFavorites = async (req, res) => {
         '_id type name thumbnail currentPrice oldPrice rating reviewsCount stock',
     });
     if (!user) return res.status(404).json({ error: 'User not found' });
-    res.setHeader('Cache-Control', 'no-cache');
     res.status(201).send(user.favorites);
   } catch (error) {
     res.status(500).json({ error: 'Server error' });
