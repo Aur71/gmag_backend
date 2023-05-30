@@ -128,8 +128,30 @@ const addProductToFavorites = async (req, res) => {
   }
 };
 
-const removeProductFromFavorites = (req, res) => {
-  res.send('remove product from list');
+const removeProductFromFavorites = async (req, res) => {
+  const userId = req.user._id;
+  const { productId, listId } = req.params;
+
+  try {
+    const user = await User.findById(userId).select('favorites').populate({
+      path: 'favorites.lists.products',
+      select:
+        '_id type name thumbnail currentPrice oldPrice rating reviewsCount stock',
+    });
+    if (!user) return res.status(404).json({ error: 'User not found' });
+    user.favorites.lists.forEach((list) => {
+      if (
+        list._id.toString() === user.favorites.lists[0]._id.toString() ||
+        list._id.toString() === listId.toString()
+      ) {
+        list.products.pull(productId);
+      }
+    });
+    await user.save();
+    res.status(201).send(user.favorites);
+  } catch (error) {
+    res.status(500).send({ error: 'Server error' });
+  }
 };
 
 const moveProduct = (req, res) => {
